@@ -14,7 +14,7 @@ public:
     ~MainWindow();
 private:
     QWidget *mainWidget;
-    QHBoxLayout *mainLayout;
+    QVBoxLayout *mainLayout;
 };
 
 #endif // MAINWINDOW_H
