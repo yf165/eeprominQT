@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QTextBrowser>
 
 class MainWindow : public QMainWindow
 {
@@ -15,6 +16,10 @@ public:
 private:
     QWidget *mainWidget;
     QVBoxLayout *mainLayout;
+    QTextBrowser *resultText;
+private slots:
+    void readStart();
+    void clearExit();
 };
 
 #endif // MAINWINDOW_H
