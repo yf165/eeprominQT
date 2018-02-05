@@ -13,6 +13,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    eeprom.c
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    eeprom.h

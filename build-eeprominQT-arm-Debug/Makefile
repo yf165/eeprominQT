@@ -49,9 +49,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../eeprominQT/main.cpp \
-		../eeprominQT/mainwindow.cpp moc_mainwindow.cpp
+		../eeprominQT/mainwindow.cpp \
+		../eeprominQT/eeprom.c moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		eeprom.o \
 		moc_mainwindow.o
 DIST          = /opt/QT5.6.2/mkspecs/features/spec_pre.prf \
 		/opt/QT5.6.2/mkspecs/common/unix.conf \
@@ -139,8 +141,10 @@ DIST          = /opt/QT5.6.2/mkspecs/features/spec_pre.prf \
 		/opt/QT5.6.2/mkspecs/features/exceptions.prf \
 		/opt/QT5.6.2/mkspecs/features/yacc.prf \
 		/opt/QT5.6.2/mkspecs/features/lex.prf \
-		../eeprominQT/eeprominQT.pro ../eeprominQT/mainwindow.h ../eeprominQT/main.cpp \
-		../eeprominQT/mainwindow.cpp
+		../eeprominQT/eeprominQT.pro ../eeprominQT/mainwindow.h \
+		../eeprominQT/eeprom.h ../eeprominQT/main.cpp \
+		../eeprominQT/mainwindow.cpp \
+		../eeprominQT/eeprom.c
 QMAKE_TARGET  = eeprominQT
 DESTDIR       = 
 TARGET        = eeprominQT
@@ -347,8 +351,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../eeprominQT/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../eeprominQT/main.cpp ../eeprominQT/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../eeprominQT/mainwindow.h ../eeprominQT/eeprom.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../eeprominQT/main.cpp ../eeprominQT/mainwindow.cpp ../eeprominQT/eeprom.c $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -489,6 +493,16 @@ moc_mainwindow.cpp: /opt/QT5.6.2/include/QtWidgets/QMainWindow \
 		/opt/QT5.6.2/include/QtWidgets/qlayoutitem.h \
 		/opt/QT5.6.2/include/QtWidgets/qgridlayout.h \
 		/opt/QT5.6.2/include/QtWidgets/QHBoxLayout \
+		/opt/QT5.6.2/include/QtWidgets/QTextBrowser \
+		/opt/QT5.6.2/include/QtWidgets/qtextbrowser.h \
+		/opt/QT5.6.2/include/QtWidgets/qtextedit.h \
+		/opt/QT5.6.2/include/QtWidgets/qabstractscrollarea.h \
+		/opt/QT5.6.2/include/QtWidgets/qframe.h \
+		/opt/QT5.6.2/include/QtGui/qtextdocument.h \
+		/opt/QT5.6.2/include/QtGui/qtextoption.h \
+		/opt/QT5.6.2/include/QtGui/qtextcursor.h \
+		/opt/QT5.6.2/include/QtGui/qtextformat.h \
+		/opt/QT5.6.2/include/QtGui/qpen.h \
 		../eeprominQT/mainwindow.h
 	/opt/QT5.6.2/bin/moc $(DEFINES) -I/opt/QT5.6.2/mkspecs/linux-arm-gnueabi-g++ -I/mnt/hgfs/windows_share/s5vp210/app/GitHub/eeprominQT/eeprominQT -I/opt/QT5.6.2/include -I/opt/QT5.6.2/include/QtWidgets -I/opt/QT5.6.2/include/QtGui -I/opt/QT5.6.2/include/QtCore -I. -I/usr/local/arm/arm-2009q3/arm-none-linux-gnueabi/include/c++/4.4.1 -I/usr/local/arm/arm-2009q3/arm-none-linux-gnueabi/include/c++/4.4.1/arm-none-linux-gnueabi -I/usr/local/arm/arm-2009q3/arm-none-linux-gnueabi/include/c++/4.4.1/backward -I/usr/local/arm/arm-2009q3/lib/gcc/arm-none-linux-gnueabi/4.4.1/include -I/usr/local/arm/arm-2009q3/lib/gcc/arm-none-linux-gnueabi/4.4.1/include-fixed -I/usr/local/arm/arm-2009q3/arm-none-linux-gnueabi/include -I/usr/local/arm/arm-2009q3/arm-none-linux-gnueabi/libc/usr/include ../eeprominQT/mainwindow.h -o moc_mainwindow.cpp
 
@@ -620,6 +634,16 @@ main.o: ../eeprominQT/main.cpp ../eeprominQT/mainwindow.h \
 		/opt/QT5.6.2/include/QtWidgets/qlayoutitem.h \
 		/opt/QT5.6.2/include/QtWidgets/qgridlayout.h \
 		/opt/QT5.6.2/include/QtWidgets/QHBoxLayout \
+		/opt/QT5.6.2/include/QtWidgets/QTextBrowser \
+		/opt/QT5.6.2/include/QtWidgets/qtextbrowser.h \
+		/opt/QT5.6.2/include/QtWidgets/qtextedit.h \
+		/opt/QT5.6.2/include/QtWidgets/qabstractscrollarea.h \
+		/opt/QT5.6.2/include/QtWidgets/qframe.h \
+		/opt/QT5.6.2/include/QtGui/qtextdocument.h \
+		/opt/QT5.6.2/include/QtGui/qtextoption.h \
+		/opt/QT5.6.2/include/QtGui/qtextcursor.h \
+		/opt/QT5.6.2/include/QtGui/qtextformat.h \
+		/opt/QT5.6.2/include/QtGui/qpen.h \
 		/opt/QT5.6.2/include/QtWidgets/QApplication \
 		/opt/QT5.6.2/include/QtWidgets/qapplication.h \
 		/opt/QT5.6.2/include/QtCore/qcoreapplication.h \
@@ -943,6 +967,14 @@ mainwindow.o: ../eeprominQT/mainwindow.cpp /opt/QT5.6.2/include/QtWidgets/QPushB
 		/opt/QT5.6.2/include/QtGui/qvalidator.h \
 		/opt/QT5.6.2/include/QtGui/qtguiversion.h \
 		/opt/QT5.6.2/include/QtWidgets/QWidget \
+		/opt/QT5.6.2/include/QtWidgets/QLineEdit \
+		/opt/QT5.6.2/include/QtWidgets/qlineedit.h \
+		/opt/QT5.6.2/include/QtWidgets/qframe.h \
+		/opt/QT5.6.2/include/QtWidgets/QLabel \
+		/opt/QT5.6.2/include/QtWidgets/qlabel.h \
+		/opt/QT5.6.2/include/QtWidgets/QSlider \
+		/opt/QT5.6.2/include/QtWidgets/qslider.h \
+		/opt/QT5.6.2/include/QtWidgets/qabstractslider.h \
 		../eeprominQT/mainwindow.h \
 		/opt/QT5.6.2/include/QtWidgets/QMainWindow \
 		/opt/QT5.6.2/include/QtWidgets/qmainwindow.h \
@@ -952,8 +984,16 @@ mainwindow.o: ../eeprominQT/mainwindow.cpp /opt/QT5.6.2/include/QtWidgets/QPushB
 		/opt/QT5.6.2/include/QtWidgets/qlayout.h \
 		/opt/QT5.6.2/include/QtWidgets/qlayoutitem.h \
 		/opt/QT5.6.2/include/QtWidgets/qgridlayout.h \
-		/opt/QT5.6.2/include/QtWidgets/QHBoxLayout
+		/opt/QT5.6.2/include/QtWidgets/QHBoxLayout \
+		/opt/QT5.6.2/include/QtWidgets/QTextBrowser \
+		/opt/QT5.6.2/include/QtWidgets/qtextbrowser.h \
+		/opt/QT5.6.2/include/QtWidgets/qtextedit.h \
+		/opt/QT5.6.2/include/QtWidgets/qabstractscrollarea.h \
+		../eeprominQT/eeprom.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../eeprominQT/mainwindow.cpp
+
+eeprom.o: ../eeprominQT/eeprom.c ../eeprominQT/eeprom.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o eeprom.o ../eeprominQT/eeprom.c
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
