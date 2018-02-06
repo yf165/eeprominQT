@@ -21,17 +21,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     resize(1024,600);
     fd = openEep(DEVICE);
+    devAddress = new QComboBox;
+    devAddress->addItem("A0");
+    devAddress->addItem("A1");
+    devAddress->addItem("A2");
+    devAddress->addItem("A3");
+    upperPage = new QComboBox;
+    upperPage->addItem("0");
+    upperPage->addItem("1");
+    upperPage->addItem("2");
+    upperPage->addItem("3");
     mainLayout = new QVBoxLayout();
     QPushButton *startButton = new QPushButton("start");
     QPushButton *stopButton = new QPushButton("exit");
  //   startButton->resize(200,200);
  //   stopButton->resize(100,100);
-    QVBoxLayout vLayout;
     QHBoxLayout *hLayout = new QHBoxLayout();
+    QHBoxLayout *hLayoutCombo = new QHBoxLayout();
     QStringList deviceAddress("devAddr");
 //    QLineEdit *resultText = new QLineEdit;
     resultText = new QTextBrowser();
     QLabel *resultLabel = new QLabel("read eeprom ");
+    QLabel *topLabel = new QLabel("read eeprom ");
 //    QSlider *slider = new QSlider();
 
 #if 1
@@ -40,10 +51,15 @@ MainWindow::MainWindow(QWidget *parent)
     hLayout->addWidget(startButton);
     hLayout->addWidget(stopButton);
 //    hLayout->addWidget(slider);
+    hLayoutCombo->addWidget(devAddress);
+    hLayoutCombo->addWidget(upperPage);
 
 #endif
  //   mainLayout->add(&deviceAddress);
+    mainLayout->addWidget(topLabel);
+    mainLayout->addLayout(hLayoutCombo);
     mainLayout->addWidget(resultText);
+
     mainLayout->addLayout(hLayout);
     mainLayout->addWidget(resultLabel);
 
@@ -68,14 +84,18 @@ void MainWindow::readStart()
 {
  //   unsigned char writeBuf[256] ={0};
  //   unsigned char readBuf[256] = {0};
-
+    unsigned char lDevAddress = 0;
+    lDevAddress = (devAddress->currentText()).toInt(0,16);
+    lDevAddress = lDevAddress >> 1;
     unsigned char readBuf[256];
+    cout<<"devAddress->currentText():"<<(devAddress->currentText()).toStdString()<<endl;
+    cout<<hex<<"(devAddress->currentText()).toInt():"<<(unsigned int)lDevAddress<<endl;
 
     resultText->clear();
 //    resultText->append("before read\n");
 
     memset(readBuf,0,sizeof(readBuf));
-    readEep(fd,DEVADDR,0,256,(char * )readBuf);
+    readEep(fd,lDevAddress,0,256,(char * )readBuf);
 //	printBuf(readBuf,128,64);
     printBuf(readBuf,0,256);
  //   resultText->append("after read\n");

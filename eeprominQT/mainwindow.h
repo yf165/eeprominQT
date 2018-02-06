@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTextBrowser>
-
+#include <QComboBox>
 #define DEVICE "/dev/i2c-0"
 #define DEVADDR 0x50
 
@@ -23,6 +23,9 @@ private:
     QVBoxLayout *mainLayout;
     QTextBrowser *resultText;
     int fd ;
+    QComboBox *devAddress;
+    QComboBox *upperPage;
+
 private slots:
     void readStart();
     void clearExit();
