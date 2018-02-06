@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QPushButton>
 #include <QtGui>
 #include <QWidget>
@@ -20,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     resize(1024,600);
-    fd = openEep(DEVICE);
+
     devAddress = new QComboBox;
     devAddress->addItem("A0");
     devAddress->addItem("A1");
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     upperPage->addItem("3");
     mainLayout = new QVBoxLayout();
     QPushButton *startButton = new QPushButton("start");
+    QPushButton *clearButton = new QPushButton("clear");
     QPushButton *stopButton = new QPushButton("exit");
  //   startButton->resize(200,200);
  //   stopButton->resize(100,100);
@@ -46,9 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
 //    QSlider *slider = new QSlider();
 
 #if 1
-//    hLayout->addWidget(resultLabel);
-//    hLayout->addWidget(resultText);
     hLayout->addWidget(startButton);
+    hLayout->addWidget(clearButton);
     hLayout->addWidget(stopButton);
 //    hLayout->addWidget(slider);
     hLayoutCombo->addWidget(devAddress);
@@ -72,41 +73,51 @@ MainWindow::MainWindow(QWidget *parent)
 //    mainWidget->setLayout(&hLayout);
     setCentralWidget(mainWidget);
     connect(startButton,SIGNAL(clicked()),this,SLOT(readStart()));
-    connect(stopButton,SIGNAL(clicked()),this,SLOT(clearExit()));
+    connect(clearButton,SIGNAL(clicked()),this,SLOT(clearB()));
+    connect(stopButton,SIGNAL(clicked()),this,SLOT(exitB()));
 }
 
 MainWindow::~MainWindow()
 {
-    closeEep(fd);
+
 }
 
 void MainWindow::readStart()
 {
- //   unsigned char writeBuf[256] ={0};
+    fd = openEep(DEVICE);
+    unsigned char writeBuf[256];
  //   unsigned char readBuf[256] = {0};
-    unsigned char lDevAddress = 0;
+    unsigned char lDevAddress = 0,pageNumber = 0;
     lDevAddress = (devAddress->currentText()).toInt(0,16);
     lDevAddress = lDevAddress >> 1;
+    pageNumber =  (upperPage->currentText()).toInt(0,16);
     unsigned char readBuf[256];
     cout<<"devAddress->currentText():"<<(devAddress->currentText()).toStdString()<<endl;
     cout<<hex<<"(devAddress->currentText()).toInt():"<<(unsigned int)lDevAddress<<endl;
 
     resultText->clear();
-//    resultText->append("before read\n");
-
+    memset(writeBuf,0,sizeof(writeBuf));
+    writeBuf[0] = pageNumber;
+    writeEep(fd,lDevAddress,PAGEADDRESS,writeBuf, 1);
     memset(readBuf,0,sizeof(readBuf));
-    readEep(fd,lDevAddress,0,256,(char * )readBuf);
-//	printBuf(readBuf,128,64);
-    printBuf(readBuf,0,256);
- //   resultText->append("after read\n");
-//   resultText->append(readBuf);
+    readEep(fd,lDevAddress,0,128,(char * )readBuf);
+    printBuf(readBuf,0,128);
+    memset(readBuf,0,sizeof(readBuf));
+    readEep(fd,lDevAddress,128,128,(char * )readBuf);
+    printBuf(readBuf,128,128);
+    closeEep(fd);
 
    //#################################
 }
-void MainWindow::clearExit()
+void MainWindow::clearB()
 {
     resultText->clear();
 
+}
+void MainWindow::exitB()
+{
+    MainWindow::close();
+    QApplication::exit();
 }
 int MainWindow::printBuf(const unsigned char *readBuf,int regAddr,int num)
 {

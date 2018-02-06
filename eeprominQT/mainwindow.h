@@ -8,7 +8,7 @@
 #include <QComboBox>
 #define DEVICE "/dev/i2c-0"
 #define DEVADDR 0x50
-
+#define PAGEADDRESS 0x7f
 
 class MainWindow : public QMainWindow
 {
@@ -28,7 +28,8 @@ private:
 
 private slots:
     void readStart();
-    void clearExit();
+    void clearB();
+    void exitB();
 };
 
 #endif // MAINWINDOW_H
